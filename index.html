@@ -89,13 +89,14 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
 .kotsu li:not(.main) { padding-left: 4px; }
 .kotsu b { font-family: var(--font-en); font-weight: 900; }
 .kotsu b.s { color: var(--pink); font-size: 1.3em; }
-.what { padding: 12px 14px; gap: 6px; }
+.what { padding: 10px 8px; gap: 6px; }
 .what h3 { margin: 0 0 2px; }
 .what .wl { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; }
 .what .ch { min-width: 120px; background: var(--blue-soft); border: 2px solid var(--blue-line); border-radius: 10px; padding: 1px 10px; text-align: center; }
 .what .ch b { font-family: var(--font-en); font-weight: 900; margin-left: 4px; }
 .what .ch.pkc { background: var(--pink-soft); border-color: var(--pink-line); color: var(--pink); font-weight: 900; }
-.what .wk { margin: 6px 0 0; font-size: 17px; line-height: 1.5; font-weight: 900; text-align: center; line-height: 1.7; }
+.what .pn { color: var(--pink); font-weight: 900; }
+.what .wk { margin: 0; text-align: center; font-size: clamp(11px, 3.45vw, 18px); line-height: 1.5; white-space: nowrap; font-weight: 900; text-align: center; line-height: 1.7; }
 .steps { display: flex; flex-direction: column; gap: 10px; counter-reset: s; padding: 0; margin: 0; list-style: none; }
 .steps li { counter-increment: s; display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: start; }
 .steps li::before { content: counter(s); background: var(--blue); color: var(--on-blue); width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-en); font-weight: 900; }
@@ -671,11 +672,7 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
       <div class="bar"><button class="back" type="button" data-go="top">戻る</button><h2>説明</h2></div>
 
       <div class="card what">
-        <h3>3人称単数 ってなに？</h3>
-        <p class="wl"><span class="ch">私 <b>I</b></span><span class="eq">＝ 1人称</span></p>
-        <p class="wl"><span class="ch">あなた <b>you</b></span><span class="eq">＝ 2人称</span></p>
-        <p class="wl"><span class="ch pkc">それ以外</span><span class="eq">＝ 3人称</span></p>
-        <p class="wk"><span class="pk">3人称</span> の <b>ひとり</b> か <b>ひとつ</b><br>↓<br><span class="pk">3人称単数</span></p>
+        <p class="wk"><b>I</b> と <b>you</b> 以外の「<span class="pn">ひとり・ひとつ</span>」が <span class="pn">3人称単数</span></p>
       </div>
 
       <div class="card">
