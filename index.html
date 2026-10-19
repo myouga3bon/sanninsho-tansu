@@ -838,7 +838,7 @@ const W = [
   ['my friends','they',0],['you and I','we',0],['her sisters','they',0],['your brothers','they',0],
   ['my parents','they',0],['Mike and Ann','they',0],['the boys','they',0],['the girls','they',0],
   ['Ken and I','we',0],['Aya and I','we',0],['my dogs','they',0],['my cats','they',0],
-  ['Tom and Mary','they',0],['our teachers','they',0],['his friends','they',0],['my sister and I','we',0],['my sisters','they',0],['your mothers','they',0],['his brothers','they',0],['her friends','they',0],['our sisters','they',0],['your parents','they',0]
+  ['Tom and Mary','they',0],['our teachers','they',0],['his friends','they',0],['my sister and I','we',0],['I and you','we',0],['my sisters','they',0],['your mothers','they',0],['his brothers','they',0],['her friends','they',0],['our sisters','they',0],['your parents','they',0]
 ].map(a => ({ w:a[0], r:a[1], t:!!a[2] }));
 
 const WHY = {
@@ -973,7 +973,7 @@ const VERBS = [['play','plays','s'],['study','studies','y'],['eat','eats','s'],[
 const VNOTE = { s:'s を付ける', es:'es を付ける', y:'y を i に変えて es を付ける', have:'have は has に変わる' };
 function buildVerb() {
   const pick = (arr,n) => shuffle(arr).slice(0,n);
-  const subj = shuffle([ ...pick(W.filter(x=>x.t),6), ...pick(W.filter(x=>!x.t),6) ]);
+  const subj = shuffle([ ...pick(W.filter(x=>x.t),6), ...pick(W.filter(x=>!x.t && isTrick(x.w)),1), ...pick(W.filter(x=>!x.t && !isTrick(x.w)),5) ]);
   const vs = shuffle(VERBS).slice(0,12);
   const items = subj.map((w,i) => {
     const v = vs[i], ans = w.t ? v[1] : v[0];
@@ -1012,6 +1012,8 @@ const DI = [
   {w:'my pens', t:0, why:PL, svg:'<svg viewBox="0 0 100 80" class="two" aria-hidden="true"><use href="#t_pen" x="-8" width="60" height="80"/><use href="#t_pen" x="48" width="60" height="80"/></svg>'},
   {w:'my cats', t:0, why:PL, svg:sv2('t_cat','t_cat')},
   {w:'my brothers', t:0, why:PL, svg:sv2('p_brother','p_brother')},
+  {w:'Ken and I', t:0, why:PL, svg:sv2('p_ken','boy','','--shirt:var(--shirt-a)')},
+  {w:'you and I', t:0, why:PL, svg:sv2('girl','boy','--shirt:var(--shirt-c)','--shirt:var(--shirt-a)')},
   {w:'my sisters', t:0, why:PL, svg:sv2('p_she','p_she')},
   {w:'my parents', t:0, why:PL, svg:sv2('p_mother','p_he')},
   {w:'his friends', t:0, why:PL, svg:sv2('p_ken','p_he')},
@@ -1117,12 +1119,14 @@ function buildFrames(cfg) {
     box.appendChild(d);
   });
 }
+const isTrick = w => / and I$|^I and you$/.test(w);
 function makeSet(cfg) {
   const pick = (a, n) => shuffle(a).slice(0, n);
   const base = cfg.ill ? DI : W.map(wItem);
   const T = base.filter(x => x.t), N = base.filter(x => !x.t);
-  if (cfg.mode === 'be') return shuffle([ ...pick(N.filter(x => x.v === 'am'), 1), ...pick(T, 4), ...pick(N.filter(x => x.v === 'are'), 4) ]);
-  return shuffle([ ...pick(T, 6), ...pick(N, 6) ]);
+  const tr = N.filter(x => isTrick(x.w)), pl = N.filter(x => !isTrick(x.w));
+  if (cfg.mode === 'be') return shuffle([ ...pick(pl.filter(x => x.v === 'am'), 1), ...pick(T, 4), ...pick(tr, 1), ...pick(pl.filter(x => x.v === 'are'), 3) ]);
+  return shuffle([ ...pick(T, 6), ...pick(tr, 1), ...pick(pl, 5) ]);
 }
 function startDnd() {
   const cfg = dnd.cfg, cards = makeSet(cfg), tray = $('tray');
