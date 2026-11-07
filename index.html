@@ -842,24 +842,24 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
 <script>
 // [word, replacement, is3rdSingular, note]
 const W = [
-  ['she','she',1],['Ken','he',1],['Mr.Takahashi','he',1],['your mother','she',1],
-  ['Ms.Green','she',1],['Yuki','he か she',1],['my mother','she',1],['Tom','he',1],
+  ['she','she',1],['Ken','he',1],['Mr. Takahashi','he',1],['your mother','she',1],
+  ['Ms. Green','she',1],['Yuki','he か she',1],['my mother','she',1],['Tom','he',1],
   ['he','he',1],['my dog','it',1],['Nancy','she',1],['her father','he',1],
-  ['my brother','he',1],['your sister','she',1],['my father','he',1],['Mr.Tanaka','he',1],
+  ['my brother','he',1],['your sister','she',1],['my father','he',1],['Mr. Tanaka','he',1],
   ['that','it',1],['this','it',1],['it','it',1],['my cat','it',1],
   ['his sister','she',1],['her brother','he',1],['my sister','she',1],['our teacher','he か she',1],
-  ['Mr.Sato','he',1],['Ms.Brown','she',1],['Mary','she',1],['Taro','he',1],
+  ['Mr. Sato','he',1],['Ms. Brown','she',1],['Mary','she',1],['Taro','he',1],
   ['Aya','she',1],['Mike','he',1],['my uncle','he',1],['her mother','she',1],
   ['your father','he',1],['the girl','she',1],['the boy','he',1],['my friend','he か she',1],
-  ['Emi','she',1],['Jack','he',1],['Ms.Tanaka','she',1],['the cat','it',1],
+  ['Emi','she',1],['Jack','he',1],['Ms. Tanaka','she',1],['the cat','it',1],
   ['my bag','it',1],['this book','it',1],['that dog','it',1],['your pen','it',1],
-  ['his dog','it',1],['Mr.Brown','he',1],['his mother','she',1],['your brother','he',1],['her sister','she',1],['my grandmother','she',1],['his father','he',1],['your cat','it',1],['my aunt','she',1],['you','you',0],
+  ['his dog','it',1],['Mr. Brown','he',1],['his mother','she',1],['your brother','he',1],['her sister','she',1],['my grandmother','she',1],['his father','he',1],['your cat','it',1],['my aunt','she',1],['you','you',0],
   ['my brothers','they',0],['we','we',0],['they','they',0],['I','I',0],
   ['his sisters','they',0],['Yumi and Emi','they',0],['Tom and I','we',0],['Ken and Yuki','they',0],
   ['my friends','they',0],['you and I','we',0],['her sisters','they',0],['your brothers','they',0],
   ['my parents','they',0],['Mike and Ann','they',0],['the boys','they',0],['the girls','they',0],
   ['Ken and I','we',0],['Aya and I','we',0],['my dogs','they',0],['my cats','they',0],
-  ['Tom and Mary','they',0],['our teachers','they',0],['his friends','they',0],['my sister and I','we',0],['I and you','we',0],['my sisters','they',0],['your mothers','they',0],['his brothers','they',0],['her friends','they',0],['our sisters','they',0],['your parents','they',0]
+  ['Tom and Mary','they',0],['our teachers','they',0],['his friends','they',0],['my sister and I','we',0],['I and you','we',0],['my sisters','they',0],['his brothers','they',0],['her friends','they',0],['our sisters','they',0],['your parents','they',0]
 ].map(a => ({ w:a[0], r:a[1], t:!!a[2] }));
 
 const WHY = {
@@ -1149,7 +1149,8 @@ function buildFrames(cfg) {
 }
 const isTrick = w => / and I$|^I and you$/.test(w);
 function makeSet(cfg) {
-  const pick = (a, n) => shuffle(a).slice(0, n);
+  const used = new Set();
+  const pick = (a, n) => { const out = []; for (const x of shuffle(a)) { if (out.length >= n) break; if (x.svg && used.has(x.svg)) continue; if (x.svg) used.add(x.svg); out.push(x); } return out; };
   const base = cfg.ill ? DI : W.map(wItem);
   const T = base.filter(x => x.t), N = base.filter(x => !x.t);
   const tr = N.filter(x => isTrick(x.w)), pl = N.filter(x => !isTrick(x.w));
