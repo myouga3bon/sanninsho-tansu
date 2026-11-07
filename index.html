@@ -211,8 +211,6 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
 
 
 .fab { position: fixed; right: max(12px, env(safe-area-inset-right, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 20; background: var(--blue); color: var(--on-blue); border: 0; border-radius: 999px; padding: 10px 20px; font-weight: 900; font-size: 17px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
-.home { display: block; width: fit-content; margin: 20px auto 6px; background: transparent; border: 2px solid #8FD3A8; color: #0E7A54; border-radius: 999px; padding: 7px 20px; font-weight: 900; font-size: 15px; text-decoration: none; }
-.home:hover { border-color: #0E7A54; }
 
 
 .qc.row.tight { padding: 6px 8px; gap: 4px 8px; grid-template-columns: 28px clamp(96px, 34vw, 150px) auto 1fr; justify-content: start; }
@@ -310,9 +308,8 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
 
 
 .low { position: relative; margin-top: 22px; }
-.scene[data-mode="gen"] .lc .word { visibility: hidden; }
-.ovl { position: absolute; left: -6px; right: -6px; bottom: -9px; z-index: 2; background: var(--card); border: 3px solid var(--blue); border-radius: 14px; box-shadow: 0 4px 10px rgba(0,0,0,.22); text-align: center; color: var(--blue); font-family: var(--font-jp); font-weight: 900; font-size: clamp(24px, 7vw, 34px); line-height: 1.15; padding: 2px 8px; }
-.scene[data-mode="gen"] .low { margin-bottom: 12px; }
+.scene[data-mode="gen"] .lc .word { display: none; }
+.ovl { grid-column: 1 / -1; margin-top: 2px; background: var(--card); border: 3px solid var(--blue); border-radius: 14px; text-align: center; color: var(--blue); font-family: var(--font-jp); font-weight: 900; font-size: clamp(24px, 7vw, 34px); line-height: 1.15; padding: 2px 8px; }
 .ovl .en { font-family: var(--font-en); }
 
 
@@ -365,7 +362,7 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
 
 /* setsumei banner */
 .introbox { position: relative; }
-.same { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--pink); color: var(--on-pink); border-radius: 14px; font-weight: 900; font-size: clamp(20px, 6vw, 28px); opacity: 0; visibility: hidden; transform: scale(.96); transition: opacity .25s, transform .25s, visibility .25s; text-align: center; }
+.same { position: static; min-height: 62px; padding: 6px 4px; display: flex; align-items: center; justify-content: center; background: var(--pink); color: var(--on-pink); border-radius: 14px; font-weight: 900; font-size: clamp(20px, 6vw, 28px); opacity: 0; visibility: hidden; transform: scale(.96); transition: opacity .25s, transform .25s, visibility .25s; text-align: center; }
 .same .en { font-family: var(--font-en); font-size: 1.15em; padding: 0 4px; }
 .same.on { opacity: 1; visibility: visible; transform: none; }
 .same { white-space: nowrap; font-size: clamp(15px, 4.9vw, 26px); }
@@ -479,6 +476,22 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
 .legend .l2::before { background: var(--sun-soft); border-color: var(--sun); border-style: dashed; }
 .legend .l3::before { background: var(--ng-soft); border-color: var(--ng); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+.tap { margin: 0; text-align: center; font-weight: 900; font-size: clamp(14px, 4.2vw, 18px); color: var(--ink); animation: bob 1.2s ease-in-out infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+.swap button[aria-pressed="true"] { animation: glow 1.6s ease-in-out infinite; }
+@keyframes glow { 0%,100% { box-shadow: 0 0 0 0 rgba(255,212,59,.0); } 50% { box-shadow: 0 0 0 7px rgba(255,212,59,.7); } }
+@media (prefers-reduced-motion: reduce) { .tap, .swap button[aria-pressed="true"] { animation: none; } }
+.speak::before { display: none; }
+.cloud .speak { flex-direction: column; align-items: center; grid-column: 1 / -1; margin: 2px 0 0; padding: 0; justify-content: center; }
+.speak .word, .speak .word.gen { color: #d6001c; background: none; border: 0; box-shadow: none; padding: 0; font-size: clamp(60px, 19vw, 84px); line-height: 1.05; }
+.speak .word .s { color: #d6001c; text-decoration-color: #d6001c; }
+.cloud .speak .note { margin-top: 2px; }
+.cell svg { width: clamp(38px, 10.6vw, 48px); height: auto; }
+.gcells { gap: clamp(10px, 2.6vw, 16px); }
+.lc svg { width: clamp(38px, 10.6vw, 48px); height: auto; }
+.lc svg.two { width: clamp(62px, 17.5vw, 80px); height: auto; }
+.kotsu li.main { font-size: clamp(12px, 3.8vw, 19px); white-space: nowrap; }
+.kotsu li.main .pk { padding: 0 5px; }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -667,7 +680,6 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
       <svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="36" fill="var(--pink-soft)"/><text x="38" y="35" text-anchor="middle" font-size="14" font-weight="900" fill="var(--blue)" font-family="Nunito, sans-serif">study</text><text x="38" y="54" text-anchor="middle" font-size="14" font-weight="900" fill="var(--pink)" font-family="Nunito, sans-serif">studies</text></svg>
       <span><span class="big"><span class="lv">レベル6</span>一般動詞選択クイズ</span><br><span class="sub">study・eat・have…… 2択で選ぼう</span></span>
     </button>
-    <a class="home" href="https://myouga3bon.github.io/herewego1/">英文法トップにもどる</a>
   </section>
 
   <!-- SETSUMEI -->
@@ -680,7 +692,8 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
       </div>
 
       <div class="card">
-        <div class="introbox"><p><span class="pk">3人称単数</span> は、私・あなた以外の <b>ひとり</b> か <b>ひとつ</b>。</p><div id="same-bn" class="same" aria-live="polite"></div></div>
+        <div class="introbox"><div id="same-bn" class="same" aria-live="polite"></div></div>
+        <p class="tap">👆 7秒ごとに自動で切りかわるよ。ボタンを押してもOK！</p>
         <div class="swap" role="group" aria-label="表示の切り替え">
           <button type="button" id="m-be" aria-pressed="true">am・is・are<small>be動詞</small></button>
           <span class="sw" aria-hidden="true">⇔</span>
@@ -697,13 +710,14 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
               <div class="gh gh-t"><svg class="gi" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4l14 7v17l-14 8-14-8V11z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M6 11l14 8 14-8M20 19v17" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg><span class="gt">ひとつ</span></div>
               <div class="gcells"><div class="cell"><svg viewBox="0 0 60 80" aria-hidden="true"><use href="#t_this" width="60" height="80"/></svg><b>this</b><small>これ</small></div><div class="cell"><svg viewBox="0 0 60 80" aria-hidden="true"><use href="#t_that" width="60" height="80"/></svg><b>that</b><small>あれ</small></div><div class="cell"><svg viewBox="0 0 60 80" aria-hidden="true"><use href="#dog" width="60" height="80"/></svg><b>it</b><small>それ</small></div><div class="cell"><svg viewBox="0 0 60 80" aria-hidden="true"><use href="#t_pen" width="60" height="80"/></svg><b>my pen</b><small>私のペン</small></div><div class="cell"><svg viewBox="0 0 60 80" aria-hidden="true"><use href="#t_cat" width="60" height="80"/></svg><b>this cat</b><small>この猫</small></div></div>
             </div>
-          </div>
-          <div class="speak">
+            <div class="speak">
             <span class="word be">is</span>
             <span class="word gen">play<span class="s">s</span></span>
             <span class="note be"><span class="pk">3人称単数</span> は 全部 <b>is</b></span>
             <span class="note gen"><span class="pk">3人称単数</span> は <b>s</b> が付く</span>
           </div>
+          </div>
+
 
           <div class="low">
             <div class="lc">
@@ -731,9 +745,10 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
       </div>
 
       <div class="card">
-        <h3>みやぶるコツ</h3>
+        <h3>おぼえかた</h3>
         <ul class="kotsu">
-          <li class="main">★ <span class="pk">ひとり</span> か <span class="pk">ひとつ</span> は 動詞に <b class="s">s</b> がつく！</li>
+          <li class="main">★ <span class="pk">ひとり</span> か <span class="pk">ひとつ</span> は <b class="s">is</b> がつく！</li>
+          <li class="main">★ <span class="pk">ひとり</span> か <span class="pk">ひとつ</span> は <b class="s">s</b> がつく！</li>
           <li>→ ただし <b>I</b> と <b>you</b> は <b>s</b> がつかない</li>
           <li>→ まよったら <b>is</b> をつけてみて、ついたら <b>s</b> がつく！</li>
           <li>→ <b>he・she・it</b> に置きかえられたら <b>s</b> がつく</li>
@@ -896,13 +911,15 @@ function showBanner(reset) {
   b.innerHTML = odd ? 'ひとり か ひとつ は <span class="en">s</span> がつく！' : 'ひとり か ひとつ は <span class="en">is</span> がつく！';
   b.classList.add('on');
 }
-function stopAuto() { clearInterval(autoT); clearTimeout(bnT); autoT = null; const b = $('same-bn'); if (b) b.classList.remove('on'); }
+function stopAuto() { clearInterval(autoT); clearTimeout(bnT); autoT = null; }
+function flip() { const m = $('scene').dataset.mode === 'be' ? 'gen' : 'be'; setMode(m); showBanner(); }
 function startAuto(first) {
   stopAuto(); setMode(first); fixSceneH(); showBanner(true);
-  autoT = setInterval(() => { setMode($('scene').dataset.mode === 'be' ? 'gen' : 'be'); showBanner(); }, 3000);
+  autoT = setInterval(flip, 7000);
 }
-$('m-be').onclick = () => startAuto('gen');
-$('m-gen').onclick = () => startAuto('be');
+function manual() { flip(); stopAuto(); autoT = setInterval(flip, 7000); }
+$('m-be').onclick = manual;
+$('m-gen').onclick = manual;
 
 /* graded quizzes (warm-up and 20 questions) */
 const pad = (n,k) => { // balanced positions 0..k-1 for n questions, shuffled
