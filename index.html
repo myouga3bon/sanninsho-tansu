@@ -211,6 +211,8 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
 
 
 .fab { position: fixed; right: max(12px, env(safe-area-inset-right, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 20; background: var(--blue); color: var(--on-blue); border: 0; border-radius: 999px; padding: 10px 20px; font-weight: 900; font-size: 17px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+.home { display: block; width: fit-content; margin: 20px auto 6px; background: transparent; border: 2px solid #8FD3A8; color: #0E7A54; border-radius: 999px; padding: 7px 20px; font-weight: 900; font-size: 15px; text-decoration: none; }
+.home:hover { border-color: #0E7A54; }
 
 
 .qc.row.tight { padding: 6px 8px; gap: 4px 8px; grid-template-columns: 28px clamp(96px, 34vw, 150px) auto 1fr; justify-content: start; }
@@ -680,6 +682,7 @@ button:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
       <svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="36" fill="var(--pink-soft)"/><text x="38" y="35" text-anchor="middle" font-size="14" font-weight="900" fill="var(--blue)" font-family="Nunito, sans-serif">study</text><text x="38" y="54" text-anchor="middle" font-size="14" font-weight="900" fill="var(--pink)" font-family="Nunito, sans-serif">studies</text></svg>
       <span><span class="big"><span class="lv">レベル6</span>一般動詞選択クイズ</span><br><span class="sub">study・eat・have…… 2択で選ぼう</span></span>
     </button>
+    <a class="home" href="https://myouga3bon.github.io/herewego1/">英文法トップにもどる</a>
   </section>
 
   <!-- SETSUMEI -->
@@ -1079,10 +1082,15 @@ function dropCard(c, fr) {
     if (dnd.placed === dnd.total) finishDnd();
   } else {
     dnd.miss++; $('miss').textContent = dnd.miss;
+    const reset = elapsed() < 60;
+    if (reset) {
+      dnd.cards.forEach(x => { x.classList.remove('placed'); $('tray').appendChild(x); });
+      dnd.placed = 0; updLeft();
+    }
     c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake');
     fr.classList.remove('flash'); void fr.offsetWidth; fr.classList.add('flash');
-    dndFb('bad', be ? `<span class="big">✖</span><span><span class="en">${it.w}</span> は <b class="en">${it.v}</b> だよ。${beWhy(it)}（＋3秒）</span>`
-                    : `<span class="big">✖</span><span><span class="en">${it.w}</span> ${it.why}、<span class="pk">3人称単数</span> ではないよ。（＋3秒）</span>`);
+    dndFb('bad', be ? `<span class="big">✖</span><span><span class="en">${it.w}</span> は <b class="en">${it.v}</b> だよ。${beWhy(it)}（＋3秒）${reset ? ' <b>はじめからやりなおし！</b>' : ''}</span>`
+                    : `<span class="big">✖</span><span><span class="en">${it.w}</span> ${it.why}、<span class="pk">3人称単数</span> ではないよ。（＋3秒）${reset ? ' <b>はじめからやりなおし！</b>' : ''}</span>`);
   }
 }
 function finishDnd() {
@@ -1156,6 +1164,7 @@ function startDnd() {
     const c = document.createElement('div'); c.className = 'dc' + (cfg.ill ? '' : ' word'); c.tabIndex = 0; c.setAttribute('role', 'button');
     c.innerHTML = (cfg.ill ? it.svg : '') + `<b>${it.w}</b>`; c._it = it; bindDrag(c); tray.appendChild(c);
   });
+  dnd.cards = [...tray.children];
   dnd.running = true; dnd.t0 = performance.now(); updLeft();
   dndFb('', `<span class="hint">${cfg.mode === 'be' ? 'カードを am・is・are の枠へ！' : '3人称単数のカードを枠へ！'}</span>`);
   tick();
@@ -1166,7 +1175,7 @@ function newDnd(name) {
   dnd = { cfg, total: 0, placed: 0, miss: 0, sel: null, running: false, done: false, t0: 0, raf: 0 };
   $('dnd-title').innerHTML = `${cfg.title} <small class="tagi">${cfg.tag}</small>`;
   buildFrames(cfg); $('miss').textContent = '0'; setClock(0); $('dnd-res').hidden = true;
-  dndFb('', '<span class="hint">スタートを押すと タイマーが動くよ</span>');
+  dndFb('', '<span class="hint">スタートを押すと タイマーが動くよ。<br>1分以内にミスすると はじめから！</span>');
   const tray = $('tray'); tray.className = 'tray';
   tray.innerHTML = '<div class="startbox"><button id="dnd-start" class="btn" type="button">スタート</button><p>押すとカードが出て、タイマーが動くよ</p></div>';
   $('dnd-start').onclick = startDnd; updLeft();
